@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>국제교류 실무 영상 강의실</title>
+<meta name="description" content="국제교류수업 운영 매뉴얼(2026)을 챕터별 내레이션 영상으로 따라 배우는 실무 강의실">
+<meta name="theme-color" content="#14264d">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* 디자인 토큰 — shadcn 방식의 의미 토큰 + korea-policy-navy 팔레트(구조색 네이비, 강조색 블루 하나) */
+:root{
+  --background:#f6f8fb; --foreground:#141a24; --card:#ffffff; --muted:#eef2f7; --muted-foreground:#5c6470;
+  --border:#d9e1ec; --border-strong:#c5d2e3; --ring:#1b66c9;
+  --primary:#0b2c5c; --primary-foreground:#ffffff; --accent:#1b66c9; --accent-soft:#e8f1fb; --accent-ink:#134d99;
+  --law:#0b2c5c; --gov:#1b66c9; --case:#b4690e; --ok:#1f9d57; --hl:#fff4d1;
+  --radius:10px; --radius-sm:6px; --radius-lg:14px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --f:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo',sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --background:#0a0f1a; --foreground:#e7ebf2; --card:#111827; --muted:#182133; --muted-foreground:#9aa5b8;
+  --border:#243049; --border-strong:#2f3d5c; --ring:#6aa3ef;
+  --primary:#0b2c5c; --accent:#5b9bef; --accent-soft:#14284a; --accent-ink:#9cc3f7;
+  --law:#8fb0e6; --gov:#5b9bef; --case:#e0a052; --ok:#41c27c; --hl:#33301d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --background:#0a0f1a; --foreground:#e7ebf2; --card:#111827; --muted:#182133; --muted-foreground:#9aa5b8;
+  --border:#243049; --border-strong:#2f3d5c; --ring:#6aa3ef;
+  --primary:#0b2c5c; --accent:#5b9bef; --accent-soft:#14284a; --accent-ink:#9cc3f7;
+  --law:#8fb0e6; --gov:#5b9bef; --case:#e0a052; --ok:#41c27c; --hl:#33301d; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:84px}
+body{margin:0;background:var(--background);color:var(--foreground);font-family:var(--f);font-size:16px;line-height:1.65;word-break:keep-all;
+  -webkit-font-smoothing:antialiased;letter-spacing:-.01em;overflow-wrap:break-word;line-break:strict;text-wrap:pretty}
+/* 줄바꿈은 띄어쓰기(어절) 단위로만 — 한 단어가 두 줄로 쪼개지지 않게, 마지막 줄에 한 단어만 남지 않게 */
+*,*::before,*::after{word-break:keep-all}
+.brand .logo{color:var(--primary);display:grid}
+.why,.info div,.now span,.cue span,.chk span,.src div,.cap span,.sc button span,h1 small,.notice p,.results button{text-wrap:balance}
+.why,.notice p{text-wrap:pretty}
+a{color:inherit;text-decoration:none}
+button,select,input{font:inherit;color:inherit}
+button,a,label,select,summary{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+select{background:var(--card);color:var(--foreground)}
+:focus-visible{outline:2px solid var(--ring);outline-offset:2px;border-radius:var(--radius-sm)}
+.num{font-variant-numeric:tabular-nums}
+.skip{position:absolute;left:-999px;top:8px;background:var(--card);padding:10px 14px;border-radius:var(--radius);z-index:50;border:1px solid var(--border)}
+.skip:focus{left:16px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* 상단 바: 플랫 네이비 밴드 */
+.bar{position:sticky;top:0;z-index:20;background:var(--primary);color:var(--primary-foreground);border-bottom:1px solid rgba(255,255,255,.08);
+  padding:10px max(16px,env(safe-area-inset-right)) 10px max(16px,env(safe-area-inset-left));padding-top:max(10px,env(safe-area-inset-top))}
+.bar-in{max-width:1440px;margin:0 auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{width:38px;height:38px;border-radius:var(--radius-sm);background:#fff;color:var(--primary);display:grid;place-items:center;flex:none;font-weight:900;font-size:15px;letter-spacing:-.04em}
+.brand b{display:block;font-size:16px;font-weight:800;line-height:1.3;letter-spacing:-.02em}
+.brand span{display:block;font-size:12.5px;color:rgba(255,255,255,.7);line-height:1.3}
+.search{position:relative;flex:1 1 240px;max-width:440px;margin-left:auto}
+.search svg{position:absolute;left:12px;top:50%;translate:0 -50%;width:16px;height:16px;opacity:.75;pointer-events:none}
+.search input{width:100%;height:42px;border:1px solid rgba(255,255,255,.18);border-radius:var(--radius);padding:0 12px 0 36px;background:rgba(255,255,255,.08);color:#fff}
+.search input::placeholder{color:rgba(255,255,255,.62)}
+.search input:focus{background:rgba(255,255,255,.14);outline:2px solid #6aa3ef;outline-offset:0}
+.results{position:absolute;left:0;right:0;top:calc(100% + 6px);background:var(--card);color:var(--foreground);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:0 18px 40px rgba(11,44,92,.18);max-height:60vh;overflow:auto;overscroll-behavior:contain;z-index:30;padding:4px}
+.results button{display:block;width:100%;text-align:left;border:0;background:none;padding:10px 12px;border-radius:var(--radius-sm);line-height:1.5}
+.results button:hover,.results button:focus-visible{background:var(--accent-soft)}
+.results small{display:block;color:var(--accent-ink);font-weight:700;font-size:12.5px}
+.results .none{padding:12px;color:var(--muted-foreground)}
+mark{background:var(--hl);color:inherit;padding:0 2px;border-radius:3px}
+.overall{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.85)}
+.overall .track{width:112px;height:6px;border-radius:99px;background:rgba(255,255,255,.18);overflow:hidden}
+.overall .track i{display:block;height:100%;background:#fff;width:0;transition:width .5s var(--ease)}
+.icon-btn{border:1px solid rgba(255,255,255,.18);background:transparent;border-radius:var(--radius);width:42px;height:42px;display:grid;place-items:center;color:#fff}
+.icon-btn:hover{background:rgba(255,255,255,.1)}
+.icon-btn svg{width:18px;height:18px}
+
+/* 레이아웃 */
+.wrap{max-width:1440px;margin:24px auto 0;padding:0 max(16px,env(safe-area-inset-right)) 32px max(16px,env(safe-area-inset-left));
+  display:grid;grid-template-columns:312px minmax(0,1fr);gap:24px;align-items:start}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg)}
+
+/* 목차 */
+.side{position:sticky;top:86px;max-height:calc(100vh - 106px);display:flex;flex-direction:column;overflow:hidden}
+.side-h{display:flex;justify-content:space-between;align-items:baseline;padding:16px 16px 10px;border-bottom:1px solid var(--border)}
+.side-h h2{margin:0;font-size:15px;font-weight:800}
+.side-h span{font-size:13px;color:var(--muted-foreground)}
+.chs{overflow:auto;overscroll-behavior:contain;padding:8px;scrollbar-width:thin}
+.ch{display:grid;grid-template-columns:44px minmax(0,1fr) 20px;gap:12px;align-items:center;border-radius:var(--radius);padding:8px;min-height:60px}
+.ch:hover{background:var(--muted)}
+.ch .n{width:44px;height:44px;border-radius:var(--radius-sm);background:var(--muted);color:var(--foreground);display:grid;place-items:center;font-weight:800;font-size:14px;border:1px solid var(--border)}
+.ch .t{display:block;font-weight:700;font-size:15px;line-height:1.35}
+.ch .m{display:block;font-size:12.5px;color:var(--muted-foreground);margin-top:1px}
+.ch .p{display:block;height:3px;border-radius:2px;background:var(--border);overflow:hidden;margin-top:7px}
+.ch .p i{display:block;height:100%;background:var(--accent);width:0}
+.ch .done{color:var(--ok);visibility:hidden}
+.ch .done svg{width:20px;height:20px;display:block}
+.ch.is-done .done{visibility:visible}
+.ch[aria-current="page"]{background:var(--accent-soft)}
+.ch[aria-current="page"] .n{background:var(--primary);color:#fff;border-color:var(--primary)}
+.sc{list-style:none;margin:4px 0 10px 29px;padding:0 0 0 17px;border-left:2px solid var(--border)}
+.sc button{display:flex;gap:10px;width:100%;text-align:left;border:0;background:none;padding:6px 8px;font-size:13.5px;color:var(--muted-foreground);border-radius:var(--radius-sm);line-height:1.45;min-height:34px;align-items:baseline}
+.sc button:hover{background:var(--muted);color:var(--foreground)}
+.sc button.on{color:var(--foreground);font-weight:700;background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.sc time{color:var(--muted-foreground);flex:none;width:40px;font-size:12.5px}
+
+/* 플레이어 */
+.main{display:flex;flex-direction:column;gap:18px;min-width:0}
+.player{position:relative;background:#000;border-radius:var(--radius-lg);overflow:hidden;aspect-ratio:16/9;container-type:inline-size;border:1px solid var(--border)}
+.player video{width:100%;height:100%;display:block;background:#000}
+.player:fullscreen{border-radius:0;aspect-ratio:auto;border:0}
+.player:fullscreen video{object-fit:contain}
+/* 자막 — 한 번에 한 묶음, 줄마다 독립 배경(겹침 없음), 플레이어 폭에 비례 */
+.cap{position:absolute;left:5%;right:5%;bottom:clamp(44px,12.5%,170px);text-align:center;pointer-events:none;z-index:2;
+  --cs:1;font-size:calc(clamp(15px,3cqw,48px) * var(--cs));line-height:1.8;font-weight:600;letter-spacing:-.015em;transition:bottom .25s var(--ease)}
+.player.idle .cap{bottom:clamp(20px,6%,90px)}
+.cap span{background:rgba(8,14,28,.88);color:#fff;padding:.14em .6em;border-radius:.28em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.cap.s{--cs:.8}.cap.l{--cs:1.22}.cap.xl{--cs:1.45}
+.cap:empty{visibility:hidden}
+.pctl{position:absolute;top:12px;right:12px;display:flex;gap:8px;z-index:3;opacity:0;transition:opacity .2s}
+.player:hover .pctl,.player:focus-within .pctl{opacity:1}
+.pctl button{width:44px;height:44px;border-radius:var(--radius);border:0;background:rgba(8,14,28,.66);color:#fff;display:grid;place-items:center}
+.pctl svg{width:20px;height:20px}
+.resume{position:absolute;left:14px;top:14px;z-index:3;background:var(--card);color:var(--foreground);border:1px solid var(--border);border-radius:var(--radius);padding:0 16px;height:44px;font-weight:700}
+
+/* 제목·도구 */
+.head{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.head .tt{flex:1 1 320px;min-width:0}
+.kicker{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--accent-ink)}
+.kicker b{background:var(--primary);color:#fff;border-radius:var(--radius-sm);padding:2px 9px;font-size:12.5px}
+:root[data-theme="dark"] .kicker b{background:var(--accent-soft);color:var(--accent-ink)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .kicker b{background:var(--accent-soft);color:var(--accent-ink)}}
+h1{margin:6px 0 0;font-size:30px;line-height:1.25;font-weight:800;letter-spacing:-.03em;text-wrap:balance}
+h1 small{display:block;font-size:16px;font-weight:500;color:var(--muted-foreground);margin-top:6px;letter-spacing:-.01em}
+.nav{display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:44px;border:1px solid var(--border-strong);background:var(--card);border-radius:var(--radius);padding:0 16px;font-weight:700;font-size:14.5px;transition:background-color .15s,border-color .15s}
+.btn:hover{background:var(--muted)}
+.btn.pri{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn.pri:hover{background:#123a74}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn svg{width:16px;height:16px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:14px;color:var(--muted-foreground)}
+.chip{display:inline-flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:0 12px;height:40px;color:var(--foreground)}
+.chip:hover{border-color:var(--border-strong)}
+.chip input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent);margin:0}
+.chip select{border:0;background:var(--card);font-weight:700;padding:0 2px}
+.tools .keys{margin-left:auto;font-size:12.5px;color:var(--muted-foreground)}
+kbd{font-family:var(--f);font-size:11.5px;border:1px solid var(--border-strong);border-bottom-width:2px;border-radius:5px;padding:0 5px;background:var(--card);color:var(--foreground)}
+.now{display:flex;gap:8px;flex-wrap:wrap;font-size:14px}
+.now span{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:6px 12px;color:var(--muted-foreground);min-width:0}
+.now span b{color:var(--foreground);margin-right:6px}
+.bd{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--foreground);border:1px solid var(--border);background:var(--card);border-radius:999px;padding:1px 10px 1px 8px;vertical-align:1px;white-space:nowrap}
+.bd::before{content:"";width:8px;height:8px;border-radius:2px;background:currentColor}
+.bd.law::before{background:var(--law)}.bd.gov::before{background:var(--gov)}.bd.case::before{background:var(--case)}
+.why{padding:16px 20px;border-left:4px solid var(--accent);color:var(--muted-foreground);border-radius:var(--radius)}
+.why b{color:var(--foreground)}
+.info{display:grid;grid-template-columns:1.2fr 1fr 1.2fr;gap:0;overflow:hidden}
+.info div{padding:16px 20px;min-width:0}
+.info div+div{border-left:1px solid var(--border)}
+.info b{display:block;font-size:13px;color:var(--muted-foreground);margin-bottom:4px;font-weight:700}
+
+/* 탭 (shadcn line variant) */
+.tabs{overflow:hidden}
+.tablist{display:flex;gap:2px;padding:0 10px;border-bottom:1px solid var(--border);overflow-x:auto}
+.tablist button{border:0;background:none;padding:0 14px;height:50px;font-weight:700;color:var(--muted-foreground);white-space:nowrap;box-shadow:inset 0 -2px 0 transparent;transition:color .15s,box-shadow .15s}
+.tablist button:hover{color:var(--foreground)}
+.tablist button[aria-selected="true"]{color:var(--foreground);box-shadow:inset 0 -2px 0 var(--accent)}
+.pane{padding:12px;max-height:480px;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin}
+.cue{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px;padding:9px 10px;border-radius:var(--radius-sm);border:0;background:none;width:100%;text-align:left;line-height:1.55}
+.cue:hover{background:var(--muted)}
+.cue time{color:var(--muted-foreground);font-size:13px;padding-top:2px}
+.cue.on{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.sh{font-size:13px;font-weight:800;color:var(--accent-ink);margin:16px 10px 4px}
+.chk{display:flex;flex-direction:column;gap:8px}
+.chk label{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--border);border-radius:var(--radius);min-height:48px}
+.chk label:hover{border-color:var(--border-strong)}
+.chk input{width:20px;height:20px;margin-top:2px;accent-color:var(--ok);flex:none}
+.chk label:has(input:checked){background:color-mix(in srgb,var(--ok) 9%,var(--card));border-color:color-mix(in srgb,var(--ok) 45%,var(--border))}
+.chk label:has(input:checked) span{color:var(--muted-foreground);text-decoration:line-through}
+.chk .sum{font-size:13.5px;color:var(--muted-foreground);display:flex;justify-content:space-between;align-items:center;gap:12px;padding:2px 4px 6px}
+.src{display:flex;flex-direction:column;gap:8px}
+.src div{border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px}
+.src b{display:block;margin-top:6px}.src small{color:var(--muted-foreground)}
+.legend{font-size:13px;color:var(--muted-foreground);margin:4px 4px 12px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.empty{padding:20px;color:var(--muted-foreground)}
+.notice{max-width:1440px;margin:0 auto 40px;padding:0 max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left))}
+.notice details{padding:16px 20px;font-size:14px;color:var(--muted-foreground)}
+.notice summary{font-weight:700;color:var(--foreground)}
+.notice p{margin:8px 0 0}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--primary);color:#fff;padding:12px 18px;border-radius:var(--radius);font-weight:700;z-index:40;border:1px solid rgba(255,255,255,.12)}
+
+@media (max-width:1024px){
+  .wrap{grid-template-columns:minmax(0,1fr);gap:18px}
+  .side{position:static;max-height:none;order:2}
+  .chs{max-height:380px}
+  .info{grid-template-columns:minmax(0,1fr)}
+  .info div+div{border-left:0;border-top:1px solid var(--border)}
+  .tools .keys{display:none}
+  h1{font-size:24px}
+  .overall .track{width:64px}
+  .pctl{opacity:1}
+}
+@media (max-width:600px){
+  .brand>span>span{display:none}
+  .brand b{font-size:15px}
+  .search{order:3;flex-basis:100%;max-width:none}
+  .nav{width:100%}.nav .btn{flex:1}
+  .overall .track{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#player">영상으로 건너뛰기</a>
+
+<header class="bar">
+  <div class="bar-in">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span>
+      <span><b>국제교류수업 운영 매뉴얼</b><span>영상으로 따라 배우는 국제교류 실무 가이드 · 2026</span></span>
+    </div>
+    <div class="search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="내레이션에서 찾기 (예: 낙찰차액, 표절률, MOU)" autocomplete="off" aria-label="내레이션 검색" aria-controls="res">
+      <div class="results" id="res" role="listbox" hidden></div>
+    </div>
+    <div class="overall" title="90% 이상 시청한 챕터"><span id="ovt" class="num">0 / 9 완료</span><span class="track"><i id="ovb"></i></span></div>
+    <button class="icon-btn" id="theme" aria-label="화면 테마 바꾸기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</header>
+
+<div class="wrap">
+  <aside class="side panel" aria-label="챕터 목록">
+    <div class="side-h"><h2>강의 목차</h2><span id="total" class="num"></span></div>
+    <nav class="chs" id="chs"></nav>
+  </aside>
+
+  <main class="main">
+    <div class="player" id="player">
+      <video id="v" controls playsinline preload="metadata" controlslist="nofullscreen nodownload"></video>
+      <div class="cap" id="cap" aria-live="off"></div>
+      <div class="pctl"><button id="fs" aria-label="전체 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
+      <button class="resume" id="resume" hidden></button>
+    </div>
+    <div class="head">
+      <div class="tt"><div class="kicker" id="eb"></div><h1 id="tt"></h1></div>
+      <div class="nav">
+        <button class="btn" id="prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>이전</button>
+        <button class="btn pri" id="next">다음<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg></button>
+      </div>
+    </div>
+    <div class="tools">
+      <label class="chip"><input type="checkbox" id="cc" checked> 자막</label>
+      <label class="chip">자막 크기 <select id="ccs"><option value="s">작게</option><option value="" selected>보통</option><option value="l">크게</option><option value="xl">아주 크게</option></select></label>
+      <label class="chip">속도 <select id="rate"><option value="0.75">0.75×</option><option value="1" selected>1.0×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="1.75">1.75×</option></select></label>
+      <label class="chip"><input type="checkbox" id="auto" checked> 다음 챕터 자동 재생</label>
+      <span class="keys"><kbd>←</kbd><kbd>→</kbd> 5초 · <kbd>[</kbd><kbd>]</kbd> 장면 · <kbd>K</kbd> 재생 · <kbd>F</kbd> 전체 화면 · <kbd>C</kbd> 자막</span>
+    </div>
+    <div class="now" id="now" aria-live="polite"></div>
+    <div class="why panel" id="why"></div>
+    <div class="info" id="info"></div>
+    <section class="tabs panel">
+      <div class="tablist" role="tablist" aria-label="학습 자료">
+        <button role="tab" aria-selected="true" data-p="scenes">장면 목차</button>
+        <button role="tab" aria-selected="false" data-p="script">내레이션</button>
+        <button role="tab" aria-selected="false" data-p="check">업무 체크리스트</button>
+        <button role="tab" aria-selected="false" data-p="src">근거자료</button>
+      </div>
+      <div class="pane" id="pane" role="tabpanel"></div>
+    </section>
+  </main>
+</div>
+
+<div class="notice"><details class="panel" id="notice"><summary>이 매뉴얼과 영상의 성격 (꼭 읽어 주세요)</summary></details></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="data.js"></script>
+<script>
+const D = window.LECTURE_DATA || [];
+const NOTICE = ["본 매뉴얼은 국제교류 업무를 담당하는 교원의 업무 이해와 실무 수행을 지원하기 위해 제작된 참고자료입니다.", "본 매뉴얼 자체는 법적 구속력을 갖는 규정이나 독립적인 법적 근거가 아니며, 실제 업무를 추진할 때에는 관련 법령, 최신 교육청 지침 및 학교의 내부 행정절차를 반드시 확인하여야 합니다.", "영상의 내레이션은 「국제교류수업 운영 매뉴얼」(2026. 11. 10. 최종수정본)을 바탕으로 작성했습니다."];
+const $ = s => document.querySelector(s);
+const v = $('#v'), cap = $('#cap'), player = $('#player');
+const st = (() => { try { return JSON.parse(localStorage.getItem('iem-v2') || '{}'); } catch (e) { return {}; } })();
+st.max = st.max || {}; st.pos = st.pos || {}; st.ck = st.ck || {}; st.pref = st.pref || {};
+function save() { try { localStorage.setItem('iem-v2', JSON.stringify(st)); } catch (e) {} }
+const mmss = s => { s = Math.max(0, Math.floor(s)); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const CATN = { law: '법령·규정', gov: '교육청 지침·안내', case: '사례·실무 권장' };
+const label = c => c.no === 'INTRO' ? 'INTRO' : c.no === 'APPENDIX' ? 'APPENDIX' : 'CHAPTER ' + c.no;
+const short = c => c.no === 'INTRO' ? 'IN' : c.no === 'APPENDIX' ? '부록' : c.no;
+let cur = 0, tab = 'scenes', pendingSeek = null, seekPlay = true;
+
+NOTICE.forEach(t => { const p = document.createElement('p'); p.textContent = t; $('#notice').appendChild(p); });
+$('#total').textContent = `${D.length}편 · ${Math.round(D.reduce((a, c) => a + c.dur, 0) / 60)}분`;
+
+/* 테마 */
+(function () {
+  const root = document.documentElement;
+  try { const t = localStorage.getItem('iem-theme'); if (t) root.dataset.theme = t; } catch (e) {}
+  $('#theme').onclick = () => {
+    const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark';
+    try { localStorage.setItem('iem-theme', root.dataset.theme); } catch (e) {}
+  };
+})();
+
+function frac(i) { return Math.min(1, (st.max[D[i].id] || 0) / D[i].dur); }
+const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+function renderSide() {
+  $('#chs').innerHTML = D.map((c, i) => `
+    <a class="ch${frac(i) >= .9 ? ' is-done' : ''}" href="#${c.id}" data-i="${i}"${i === cur ? ' aria-current="page"' : ''}>
+      <span class="n">${short(c)}</span>
+      <span><span class="t">${esc(c.title)}</span><span class="m num">${mmss(c.dur)} · ${c.scenes.length}장면${frac(i) >= .9 ? ' · 시청 완료' : frac(i) > .02 ? ` · ${Math.round(frac(i) * 100)}%` : ''}</span><span class="p"><i style="width:${frac(i) * 100}%"></i></span></span>
+      <span class="done" aria-hidden="true">${CHECK_SVG}</span>
+    </a>${i === cur ? '<ul class="sc" id="scl">' + c.scenes.map((s, j) => `<li><button data-t="${s.t}" data-j="${j}"><time class="num">${mmss(s.t)}</time><span>${esc(s.label)}</span></button></li>`).join('') + '</ul>' : ''}`).join('');
+  const n = D.filter((c, i) => frac(i) >= .9).length;
+  $('#ovt').textContent = `${n} / ${D.length} 완료`; $('#ovb').style.width = (n / D.length * 100) + '%';
+}
+$('#chs').addEventListener('click', e => {
+  const a = e.target.closest('a.ch');
+  if (a) { if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return; e.preventDefault(); go(+a.dataset.i, true); return; }
+  const b = e.target.closest('button'); if (!b) return;
+  v.currentTime = +b.dataset.t; v.play().catch(() => {});
+});
+
+function sceneAt(t) { const s = D[cur].scenes; let j = 0; for (let k = 0; k < s.length; k++) if (s[k].t <= t + .05) j = k; return j; }
+
+/* 자막: 자체 레이어(겹침·작은 글씨 해결). iOS 네이티브 전체 화면용으로만 숨은 트랙 유지 */
+const vttCache = {};
+function vttURL(c) {
+  if (vttCache[c.id]) return vttCache[c.id];
+  const f = s => { const ms = Math.round(s * 1000); return `${String(Math.floor(ms / 3600000)).padStart(2, '0')}:${String(Math.floor(ms / 60000) % 60).padStart(2, '0')}:${String(Math.floor(ms / 1000) % 60).padStart(2, '0')}.${String(ms % 1000).padStart(3, '0')}`; };
+  const txt = 'WEBVTT\n\n' + c.cues.map((q, n) => `${n + 1}\n${f(q[0])} --> ${f(q[1])} line:85%\n${q[2]}\n`).join('\n');
+  return vttCache[c.id] = URL.createObjectURL(new Blob([txt], { type: 'text/vtt' }));
+}
+let capIdx = -2;
+function cueAt(t) { const q = D[cur].cues; let lo = 0, hi = q.length - 1, k = -1; while (lo <= hi) { const m = (lo + hi) >> 1; if (q[m][0] <= t) { k = m; lo = m + 1; } else hi = m - 1; } return k >= 0 && t <= q[k][1] ? k : -1; }
+function updCap(t) {
+  const k = $('#cc').checked ? cueAt(t) : -1;
+  if (k === capIdx) return; capIdx = k;
+  cap.innerHTML = k < 0 ? '' : `<span>${esc(D[cur].cues[k][2])}</span>`;
+}
+function applyCapSize() { cap.className = 'cap' + ($('#ccs').value ? ' ' + $('#ccs').value : ''); st.pref.ccs = $('#ccs').value; save(); }
+if (st.pref.ccs !== undefined) $('#ccs').value = st.pref.ccs;
+if (st.pref.cc === false) $('#cc').checked = false;
+if (st.pref.rate) $('#rate').value = st.pref.rate;
+applyCapSize();
+$('#ccs').addEventListener('change', applyCapSize);
+$('#cc').addEventListener('change', () => { st.pref.cc = $('#cc').checked; save(); capIdx = -2; updCap(v.currentTime); });
+$('#rate').addEventListener('change', () => { v.playbackRate = +$('#rate').value; st.pref.rate = $('#rate').value; save(); });
+
+function load(i, autoplay, seek) {
+  cur = i; const c = D[i]; capIdx = -2; cap.innerHTML = '';
+  if (location.hash !== '#' + c.id) history.replaceState(null, '', '#' + c.id);
+  v.innerHTML = ''; v.poster = c.poster || ''; v.src = c.file;
+  const tr = document.createElement('track'); tr.kind = 'subtitles'; tr.srclang = 'ko'; tr.label = '한국어'; tr.src = vttURL(c); v.appendChild(tr);
+  v.playbackRate = +$('#rate').value;
+  $('#eb').innerHTML = `<b>${c.no === 'INTRO' ? '시작' : c.no === 'APPENDIX' ? '부록' : c.no + '장'}</b>매뉴얼 ${esc(c.pages)}`;
+  $('#tt').innerHTML = esc(c.title) + (c.sub ? `<small>${esc(c.sub)}</small>` : '');
+  $('#why').innerHTML = `<b>이 장을 따로 구성한 이유</b> · ${esc(c.why)}`;
+  $('#info').innerHTML = `<div class="panel"><b>교육 목표</b>${esc(c.goal)}</div><div class="panel"><b>매뉴얼 쪽</b>${esc(c.pages)}</div><div class="panel"><b>따라 할 실습</b>${esc(c.practice)}</div>`;
+  $('#prev').disabled = i === 0; $('#next').disabled = i === D.length - 1;
+  const p = st.pos[c.id] || 0;
+  pendingSeek = seek ?? null;
+  const rb = $('#resume');
+  if (seek == null && p > 10 && p < c.dur - 15) { rb.hidden = false; rb.textContent = `▶ ${mmss(p)}부터 이어보기`; rb.onclick = () => { v.currentTime = p; v.play().catch(() => {}); rb.hidden = true; }; }
+  else rb.hidden = true;
+  lastScene = -1; renderSide(); renderPane(); updNow(0);
+  if (autoplay) v.play().catch(() => {});
+  document.title = c.title + ' · 국제교류 실무 영상 강의실';
+}
+function go(i, autoplay, seek) { if (i < 0 || i >= D.length) return; load(i, autoplay, seek); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+v.addEventListener('loadedmetadata', () => {
+  for (const t of v.textTracks) t.mode = 'hidden';
+  if (pendingSeek != null) { v.currentTime = pendingSeek; pendingSeek = null; if (seekPlay) v.play().catch(() => {}); seekPlay = true; }
+});
+// iOS 네이티브 전체 화면에서는 자체 자막이 보이지 않으므로 트랙을 켠다
+v.addEventListener('webkitbeginfullscreen', () => { for (const t of v.textTracks) t.mode = $('#cc').checked ? 'showing' : 'hidden'; });
+v.addEventListener('webkitendfullscreen', () => { for (const t of v.textTracks) t.mode = 'hidden'; });
+$('#prev').onclick = () => go(cur - 1, true);
+$('#next').onclick = () => go(cur + 1, true);
+
+/* 전체 화면: 자막 레이어가 함께 보이도록 플레이어 컨테이너를 전체 화면으로 */
+function toggleFS() {
+  if (document.fullscreenElement) document.exitFullscreen();
+  else if (player.requestFullscreen) player.requestFullscreen().catch(() => {});
+  else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+}
+$('#fs').onclick = toggleFS;
+v.addEventListener('dblclick', e => { e.preventDefault(); toggleFS(); });
+
+let lastScene = -1, lastSave = 0;
+function updNow(t) {
+  const c = D[cur], j = sceneAt(t);
+  if (j === lastScene) return; lastScene = j;
+  const s = c.scenes[j];
+  $('#now').innerHTML = `<span><b>장면 ${j + 1}/${c.scenes.length}</b>${esc(s.label)}</span>` + (s.act ? `<span><b>지금 할 일</b>${esc(s.act)}</span>` : '') + (s.page ? `<span><b>매뉴얼</b>${esc(s.page)}</span>` : '') + (s.src ? `<span><span class="bd ${s.src}">${CATN[s.src]}</span></span>` : '');
+  document.querySelectorAll('#scl button').forEach((b, k) => b.classList.toggle('on', k === j));
+  if (tab === 'scenes') document.querySelectorAll('#pane .cue').forEach((el, k) => el.classList.toggle('on', k === j));
+}
+function onTime() {
+  const c = D[cur], t = v.currentTime;
+  updNow(t); updCap(t);
+  if (tab === 'script') {
+    const k = cueAt(t);
+    const els = document.querySelectorAll('#pane .cue');
+    els.forEach((el, n) => el.classList.toggle('on', n === k));
+    if (k >= 0 && els[k] && !v.paused) { const pane = $('#pane'), el = els[k]; if (el.offsetTop < pane.scrollTop || el.offsetTop > pane.scrollTop + pane.clientHeight - 60) pane.scrollTop = el.offsetTop - 80; }
+  }
+  if (t > (st.max[c.id] || 0)) st.max[c.id] = t;
+  st.pos[c.id] = t;
+  if (Date.now() - lastSave > 3000) { lastSave = Date.now(); save(); const bar = $('#chs .ch[aria-current="page"] .p i'); if (bar) bar.style.width = frac(cur) * 100 + '%'; }
+}
+v.addEventListener('timeupdate', onTime);
+v.addEventListener('seeked', () => { capIdx = -2; onTime(); });
+// timeupdate는 약 250ms 간격이라 자막 전환을 부드럽게 하기 위해 재생 중에는 프레임마다 갱신
+(function raf() { if (!v.paused) updCap(v.currentTime); requestAnimationFrame(raf); })();
+v.addEventListener('pause', save);
+v.addEventListener('ended', () => {
+  st.max[D[cur].id] = D[cur].dur; st.pos[D[cur].id] = 0; save(); renderSide();
+  if ($('#auto').checked && cur < D.length - 1) { toast(`다음 챕터 「${D[cur + 1].title}」를 재생합니다`); setTimeout(() => go(cur + 1, true), 1800); }
+});
+let hideT; player.addEventListener('mousemove', () => { player.classList.remove('idle'); clearTimeout(hideT); hideT = setTimeout(() => !v.paused && player.classList.add('idle'), 2500); });
+v.addEventListener('pause', () => player.classList.remove('idle'));
+v.addEventListener('play', () => { clearTimeout(hideT); hideT = setTimeout(() => !v.paused && player.classList.add('idle'), 2500); });
+v.addEventListener('playing', () => { if (v.currentTime > 3) $('#resume').hidden = true; });
+v.addEventListener('seeked', () => { $('#resume').hidden = true; });
+
+function renderPane() {
+  const c = D[cur], P = $('#pane');
+  document.querySelectorAll('.tablist button').forEach(b => b.setAttribute('aria-selected', b.dataset.p === tab));
+  if (tab === 'script') {
+    let h = '', si = 0;
+    c.cues.forEach(q => {
+      while (si < c.scenes.length && c.scenes[si].t <= q[0]) { h += `<div class="sh">장면 ${si + 1} · ${esc(c.scenes[si].label)}</div>`; si++; }
+      h += `<button class="cue" data-t="${q[0]}"><time class="num">${mmss(q[0])}</time><span>${esc(q[2])}</span></button>`;
+    });
+    P.innerHTML = h;
+  } else if (tab === 'scenes') {
+    P.innerHTML = c.scenes.map((s, j) => `<button class="cue${j === lastScene ? ' on' : ''}" data-t="${s.t}"><time class="num">${mmss(s.t)}</time><span><b>${j + 1}. ${esc(s.label)}</b>${s.page ? ` <small style="color:var(--mute)">· 매뉴얼 ${esc(s.page)}</small>` : ''}${s.src ? ` <span class="bd ${s.src}">${CATN[s.src]}</span>` : ''}${s.act ? `<br><small style="color:var(--teal)">지금 할 일: ${esc(s.act)}</small>` : ''}</span></button>`).join('');
+  } else if (tab === 'check') {
+    const ck = st.ck[c.id] || [];
+    const done = c.check.filter((_, k) => ck[k]).length;
+    P.innerHTML = `<div class="chk"><div class="sum"><span>영상을 보면서 실제로 끝낸 업무를 표시하세요. 이 브라우저에만 저장됩니다.</span><b class="num">${done} / ${c.check.length}</b></div>` +
+      c.check.map((x, k) => `<label><input type="checkbox" data-k="${k}" ${ck[k] ? 'checked' : ''}><span>${esc(x)}</span></label>`).join('') + '</div>';
+  } else {
+    P.innerHTML = `<div class="legend">배지 색은 근거의 성격입니다. <span><span class="bd law">법령·규정</span> 지켜야 하는 기준</span><span><span class="bd gov">교육청 지침·안내</span> 해당 연도 확인</span><span><span class="bd case">사례·실무 권장</span> 참고 사항</span></div><div class="src">` +
+      (c.srcs.length ? c.srcs.map(s => `<div><span class="bd ${s.c}">${CATN[s.c]}</span><b>「${esc(s.t)}」</b><small>${esc(s.o)} · ${esc(s.d)} · ${esc(s.k)}</small><br><small>${esc(s.n)}</small></div>`).join('') : '<div><small>이 장은 매뉴얼 본문을 근거로 합니다.</small></div>') + '</div>';
+  }
+}
+$('#pane').addEventListener('click', e => { const q = e.target.closest('.cue'); if (q) { v.currentTime = +q.dataset.t; v.play().catch(() => {}); } });
+$('#pane').addEventListener('change', e => {
+  const k = e.target.dataset.k; if (k === undefined) return;
+  const id = D[cur].id; st.ck[id] = st.ck[id] || []; st.ck[id][k] = e.target.checked; save(); renderPane();
+});
+document.querySelector('.tablist').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { tab = b.dataset.p; setQuery('tab', tab === 'scenes' ? null : tab); renderPane(); } });
+/* 상태를 URL에 보관: ?tab=script&t=95#ch01 — 새로고침·공유해도 유지 */
+function setQuery(k, val) { const u = new URL(location.href); val == null ? u.searchParams.delete(k) : u.searchParams.set(k, val); history.replaceState(null, '', u); }
+(function () { const p = new URLSearchParams(location.search); if (['scenes', 'script', 'check', 'src'].includes(p.get('tab'))) tab = p.get('tab'); })();
+v.addEventListener('pause', () => setQuery('t', v.currentTime > 2 ? Math.floor(v.currentTime) : null));
+
+/* 검색 */
+const q = $('#q'), res = $('#res');
+q.addEventListener('input', () => {
+  const w = q.value.trim(); if (w.length < 2) { res.hidden = true; return; }
+  const out = [];
+  D.forEach((c, i) => c.cues.forEach(cu => { if (cu[2].includes(w)) out.push([i, cu]); }));
+  res.hidden = false;
+  res.innerHTML = out.length ? out.slice(0, 40).map(([i, cu]) => `<button role="option" data-i="${i}" data-t="${cu[0]}"><small>${esc(D[i].no === 'INTRO' ? 'INTRO' : D[i].no === 'APPENDIX' ? '부록' : D[i].no + '장')} ${esc(D[i].title)} · ${mmss(cu[0])}</small>${esc(cu[2]).split(esc(w)).join('<mark>' + esc(w) + '</mark>')}</button>`).join('')
+    : `<div class="none">「${esc(w)}」가 들어간 내레이션이 없습니다. 다른 낱말로 찾아보세요.</div>`;
+});
+res.addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; res.hidden = true; q.value = ''; const i = +b.dataset.i, t = +b.dataset.t; if (i === cur) { v.currentTime = t; v.play().catch(() => {}); } else go(i, true, t); });
+document.addEventListener('click', e => { if (!e.target.closest('.search')) res.hidden = true; });
+q.addEventListener('keydown', e => { if (e.key === 'Escape') { res.hidden = true; q.blur(); } });
+
+/* 단축키 */
+document.addEventListener('keydown', e => {
+  if (e.target.matches('input,select,textarea') || e.metaKey || e.ctrlKey || e.altKey) return;
+  const s = D[cur].scenes, j = sceneAt(v.currentTime), k = e.key.toLowerCase();
+  if (e.key === 'ArrowRight') { v.currentTime = Math.min(v.duration || 1e9, v.currentTime + 5); e.preventDefault(); }
+  else if (e.key === 'ArrowLeft') { v.currentTime = Math.max(0, v.currentTime - 5); e.preventDefault(); }
+  else if (e.key === ']') { if (j < s.length - 1) v.currentTime = s[j + 1].t; }
+  else if (e.key === '[') { v.currentTime = (v.currentTime - s[j].t > 2 || j === 0) ? s[j].t : s[j - 1].t; }
+  else if (k === 'k' || (e.key === ' ' && e.target === document.body)) { e.preventDefault(); v.paused ? v.play().catch(() => {}) : v.pause(); }
+  else if (k === 'n') go(cur + 1, true);
+  else if (k === 'f') toggleFS();
+  else if (k === 'c') { $('#cc').checked = !$('#cc').checked; $('#cc').dispatchEvent(new Event('change')); toast($('#cc').checked ? '자막 켬' : '자막 끔'); }
+});
+
+function toast(t) { const el = $('#toast'); el.textContent = t; el.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => el.hidden = true, 2200); }
+function fromHash() { const i = D.findIndex(c => '#' + c.id === location.hash); return i < 0 ? 0 : i; }
+window.addEventListener('hashchange', () => { const i = fromHash(); if (i !== cur) load(i, false); });
+if (D.length) { const t0 = +new URLSearchParams(location.search).get('t'); if (t0 > 0) seekPlay = false; load(fromHash(), false, t0 > 0 ? t0 : undefined); }
+</script>
+</body>
+</html>

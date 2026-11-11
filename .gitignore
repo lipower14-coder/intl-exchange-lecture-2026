@@ -1,0 +1,12 @@
+# 빌드 캐시·작업 파일
+build/cache/
+build/__pycache__/
+work/
+site_orig/
+site/data.json
+.vercel
+.claude/
+*.pyc
+# 원본 자료(저장소에 올리지 않음)
+*.pdf
+국제교류 매뉴얼_내레이션_텍스트만.txt
