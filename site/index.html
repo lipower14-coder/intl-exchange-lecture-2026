@@ -159,9 +159,7 @@ body.leaving .veil{opacity:1}
       </div>
       <ul class="stats rise d4">
         <li><b class="num" id="s-ep">9편</b><span>챕터별 영상</span></li>
-        <li><b class="num" id="s-min">45분</b><span>전체 길이</span></li>
-        <li><b class="num" id="s-sc">105</b><span>장면별 안내</span></li>
-      </ul>
+        <li><b class="num" id="s-min">45분</b><span>전체 길이</span></li>      </ul>
     </div>
   </div>
 </section>
@@ -191,9 +189,7 @@ body.leaving .veil{opacity:1}
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const mm = s => Math.round(s / 60) + '분';
   document.getElementById('s-ep').textContent = D.length + '편';
-  document.getElementById('s-min').textContent = Math.round(D.reduce((a, c) => a + c.dur, 0) / 60) + '분';
-  document.getElementById('s-sc').textContent = D.reduce((a, c) => a + c.scenes.length, 0);
-  document.getElementById('chs').innerHTML = D.map(c => {
+  document.getElementById('s-min').textContent = Math.round(D.reduce((a, c) => a + c.dur, 0) / 60) + '분';  document.getElementById('chs').innerHTML = D.map(c => {
     const n = c.no === 'INTRO' ? 'IN' : c.no === 'APPENDIX' ? '부록' : c.no;
     return `<li><a class="enter" href="lecture.html#${c.id}"><span class="n">${n}</span><span><span class="t">${esc(c.title)}</span><span class="m">${esc(c.sub)} · ${mm(c.dur)}</span></span></a></li>`;
   }).join('');
