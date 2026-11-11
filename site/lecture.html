@@ -298,7 +298,6 @@ kbd{font-family:var(--f);font-size:11.5px;border:1px solid var(--line);border-ra
           <h2>학습 자료</h2>
           <div class="tablist" role="tablist" aria-label="학습 자료">
             <button role="tab" aria-selected="true" data-p="scenes">장면 목차</button>
-            <button role="tab" aria-selected="false" data-p="script">내레이션</button>
             <button role="tab" aria-selected="false" data-p="check">업무 체크리스트</button>
             <button role="tab" aria-selected="false" data-p="src">근거자료</button>
           </div>
@@ -453,12 +452,6 @@ function updNow(t) {
 function onTime() {
   const c = D[cur], t = v.currentTime;
   updNow(t); updCap(t);
-  if (tab === 'script') {
-    const k = cueAt(t);
-    const els = document.querySelectorAll('#pane .cue');
-    els.forEach((el, n) => el.classList.toggle('on', n === k));
-    if (k >= 0 && els[k] && !v.paused) { const pane = $('#pane'), el = els[k]; if (el.offsetTop < pane.scrollTop || el.offsetTop > pane.scrollTop + pane.clientHeight - 60) pane.scrollTop = el.offsetTop - 80; }
-  }
   if (t > (st.max[c.id] || 0)) st.max[c.id] = t;
   st.pos[c.id] = t;
   if (Date.now() - lastSave > 3000) { lastSave = Date.now(); save(); const bar = $('#chs .ch[aria-current="page"] .p i'); if (bar) bar.style.width = frac(cur) * 100 + '%'; }
@@ -481,14 +474,7 @@ v.addEventListener('seeked', () => { $('#resume').hidden = true; });
 function renderPane() {
   const c = D[cur], P = $('#pane');
   document.querySelectorAll('.tablist button').forEach(b => b.setAttribute('aria-selected', b.dataset.p === tab));
-  if (tab === 'script') {
-    let h = '', si = 0;
-    c.cues.forEach(q => {
-      while (si < c.scenes.length && c.scenes[si].t <= q[0]) { h += `<div class="sh">장면 ${si + 1} · ${esc(c.scenes[si].label)}</div>`; si++; }
-      h += `<button class="cue" data-t="${q[0]}"><time class="num">${mmss(q[0])}</time><span>${esc(q[2])}</span></button>`;
-    });
-    P.innerHTML = h;
-  } else if (tab === 'scenes') {
+  if (tab === 'scenes') {
     P.innerHTML = c.scenes.map((s, j) => `<button class="cue${j === lastScene ? ' on' : ''}" data-t="${s.t}"><time class="num">${mmss(s.t)}</time><span><b>${j + 1}. ${esc(s.label)}</b>${s.page ? ` <small class="sm">· 매뉴얼 ${esc(s.page)}</small>` : ''}${s.src ? ` <span class="bd ${s.src}">${CATN[s.src]}</span>` : ''}${s.act ? `<br><small class="sm act">지금 할 일: ${esc(s.act)}</small>` : ''}</span></button>`).join('');
   } else if (tab === 'check') {
     const ck = st.ck[c.id] || [];
@@ -506,9 +492,9 @@ $('#pane').addEventListener('change', e => {
   const id = D[cur].id; st.ck[id] = st.ck[id] || []; st.ck[id][k] = e.target.checked; save(); renderPane();
 });
 document.querySelector('.tablist').addEventListener('click', e => { const b = e.target.closest('button'); if (b) { tab = b.dataset.p; setQuery('tab', tab === 'scenes' ? null : tab); renderPane(); } });
-/* 상태를 URL에 보관: ?tab=script&t=95#ch01 — 새로고침·공유해도 유지 */
+/* 상태를 URL에 보관: ?tab=check&t=95#ch01 — 새로고침·공유해도 유지 */
 function setQuery(k, val) { const u = new URL(location.href); val == null ? u.searchParams.delete(k) : u.searchParams.set(k, val); history.replaceState(null, '', u); }
-(function () { const p = new URLSearchParams(location.search); if (['scenes', 'script', 'check', 'src'].includes(p.get('tab'))) tab = p.get('tab'); })();
+(function () { const p = new URLSearchParams(location.search); if (['scenes', 'check', 'src'].includes(p.get('tab'))) tab = p.get('tab'); })();
 v.addEventListener('pause', () => setQuery('t', v.currentTime > 2 ? Math.floor(v.currentTime) : null));
 
 /* 검색 */

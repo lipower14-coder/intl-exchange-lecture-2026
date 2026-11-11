@@ -6,7 +6,7 @@
 
 | 경로 | 내용 |
 |---|---|
-| `site/` | 배포할 사이트 전체 (`index.html` 시작 페이지(3D 지구본), `lecture.html` 강의실, `data.js`, `videos/*.mp4`, `posters/*.jpg`, `assets/hero.jpg` 힉스필드 생성 일러스트) |
+| `site/` | 배포할 사이트 전체 (`index.html` 시작 페이지(실제 대륙을 그린 3D 지구본, `assets/land-110m.json`), `lecture.html` 강의실, `data.js`, `videos/*.mp4`, `posters/*.jpg`, `assets/hero.jpg` 힉스필드 생성 일러스트) |
 | `build/content.py` | **내레이션 대본과 장면 구성** — 문장을 고치려면 여기만 수정 |
 | `build/tts.py` | Supertonic 3 남성 M2 음성 생성(로컬 TTS). `1장`은 `일장`처럼 서수로 읽도록 변환 |
 | `build/slides.py` | 영상 프레임(슬라이드) 디자인 |
