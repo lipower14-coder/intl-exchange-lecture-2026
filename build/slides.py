@@ -14,6 +14,8 @@ CSS = r"""
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css');
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:1920px;height:1080px;overflow:hidden}
+*{word-break:keep-all;line-break:strict;overflow-wrap:break-word}
+p,b,span,li,dd{text-wrap:balance}
 body{font-family:'Pretendard Variable',Pretendard,sans-serif;background:#fff;color:#1A1A1A;word-break:keep-all;-webkit-font-smoothing:antialiased;letter-spacing:-.015em;position:relative}
 .band{position:absolute;left:0;right:0;top:0;height:130px;background:#0B2C5C;color:#fff;display:flex;align-items:center;gap:28px;padding:0 84px}
 .chip{flex:none;min-width:74px;height:74px;padding:0 14px;border-radius:4px;background:#fff;color:#0B2C5C;font-weight:850;font-size:34px;display:flex;align-items:center;justify-content:center;letter-spacing:-.02em}
@@ -31,7 +33,7 @@ body{font-family:'Pretendard Variable',Pretendard,sans-serif;background:#fff;col
 .thumb img{width:100%;height:100%;display:block}
 .hl{position:absolute;border:4px solid #1B66C9;background:rgba(27,102,201,.08);box-shadow:0 0 0 9999px rgba(11,44,92,.28)}
 .right{display:flex;flex-direction:column;gap:30px;min-width:0;min-height:0}
-.zoom{border:1px solid #C5D2E3;border-top:6px solid #1B66C9;border-radius:2px;padding:18px;flex:0 1 auto;min-height:0;display:flex;justify-content:center;background:#fff}
+.zoom{border:1px solid #C5D2E3;border-radius:4px;padding:18px;flex:0 1 auto;min-height:0;display:flex;justify-content:center;background:#fff}
 .zoom img{max-width:100%;max-height:100%;object-fit:contain;display:block}
 .pts{list-style:none;display:flex;flex-direction:column;flex:none;border-top:1px solid #C5D2E3}
 .pts li{display:flex;gap:18px;align-items:baseline;font-size:31px;font-weight:600;line-height:1.4;padding:13px 0;border-bottom:1px solid #C5D2E3}
@@ -55,12 +57,14 @@ body{font-family:'Pretendard Variable',Pretendard,sans-serif;background:#fff;col
 /* check */
 .chk{border-top:2px solid #0B2C5C}
 .chk div{display:flex;gap:28px;align-items:center;font-size:40px;font-weight:650;padding:26px 4px;border-bottom:1px solid #C5D2E3}
-.chk div::before{content:"✓";flex:none;width:58px;height:58px;border-radius:4px;background:#1F9D57;color:#fff;font-size:34px;font-weight:900;display:flex;align-items:center;justify-content:center}
+.ck{flex:none;width:58px;height:58px;border-radius:4px;background:#1F9D57;display:flex;align-items:center;justify-content:center}
+.ck svg{width:34px;height:34px}
 /* callout */
-.call{background:#E8F1FB;border-left:8px solid #1B66C9;padding:56px 64px}
-.call.warn{background:#FDECEC;border-left-color:#E03B3B}
-.call.law{background:#EEF1F6;border-left-color:#0B2C5C}
-.call .k{font-size:28px;font-weight:800;color:#1B66C9;margin-bottom:18px}
+.call{background:#E8F1FB;border-radius:4px;padding:56px 64px}
+.call.warn{background:#FDECEC}
+.call.law{background:#EEF1F6}
+.call .k{display:flex;align-items:center;gap:14px;font-size:28px;font-weight:800;color:#1B66C9;margin-bottom:18px}
+.call .k i{width:16px;height:16px;border-radius:3px;background:currentColor;display:block}
 .call.warn .k{color:#C62828}.call.law .k{color:#0B2C5C}
 .call p{font-size:46px;line-height:1.6;font-weight:600}
 /* cover */
@@ -78,6 +82,9 @@ body{font-family:'Pretendard Variable',Pretendard,sans-serif;background:#fff;col
 .sum dt{font-weight:800;color:#0B2C5C}.sum dd{color:#5C6470;font-weight:500}
 .cv .brand{position:absolute;left:84px;bottom:64px;font-size:22px;color:rgba(255,255,255,.6);font-weight:600}
 """
+
+
+CK = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>'
 
 
 def chlabel(c):
@@ -125,9 +132,9 @@ def make_slide(c, s, idx, page_uri=None, crop=None):
             f'<div class="st{" end" if (i + 1) % cols == 0 else ""}"><div class="ln"><i class="n">{i + 1}</i></div><b>{esc(a.lstrip("①②③④⑤⑥ "))}</b><span>{esc(b)}</span></div>'
             for i, (a, b) in enumerate(it)) + '</div></div>'
     elif k == 'check':
-        body = '<div class="mid"><div class="chk">' + ''.join(f'<div>{esc(x)}</div>' for x in s['items']) + '</div></div>'
+        body = '<div class="mid"><div class="chk">' + ''.join(f'<div><i class="ck">{CK}</i>{esc(x)}</div>' for x in s['items']) + '</div></div>'
     elif k == 'callout':
         tone = s.get('tone', 'warn')
         lab = {'warn': '주의', 'info': '참고 사례', 'law': '원칙'}[tone]
-        body = f'<div class="mid"><div class="call {tone}"><div class="k">{lab}</div><p>{esc(s["body"])}</p></div></div>'
+        body = f'<div class="mid"><div class="call {tone}"><div class="k"><i></i>{lab}</div><p>{esc(s["body"])}</p></div></div>'
     return f'{band(c, s, title)}<div class="body">{body}</div>{foot(c, idx)}'
