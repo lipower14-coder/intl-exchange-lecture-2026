@@ -29,10 +29,14 @@ python build/serve.py 5178
 
 ## Vercel에 배포
 
-`site/` 폴더를 그대로 정적 사이트로 배포하면 됩니다 (기존 `intl-exchange-lecture` 프로젝트에 덮어쓰려면 해당 프로젝트에 연결 후 배포).
+- 사이트 주소: https://intl-exchange-lecture-2026.vercel.app
+- Vercel 프로젝트 `intl-exchange-lecture-2026`이 이 GitHub 저장소에 연결되어 있고 Root Directory는 `site`입니다.
+- `main` 브랜치에 푸시하면 자동으로 다시 배포됩니다.
 
 ```
-npx vercel deploy site --prod
+git add -A
+git commit -m "변경 내용"
+git push
 ```
 
 ## 자막
