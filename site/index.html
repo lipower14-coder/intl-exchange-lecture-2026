@@ -82,8 +82,38 @@ mark{background:var(--hl);color:inherit;padding:0 2px;border-radius:3px}
 .icon-btn:hover{opacity:1;background:color-mix(in srgb,var(--fg) 7%,transparent)}
 .icon-btn svg{width:17px;height:17px}
 
+/* ── 레이아웃: 왼쪽 강의 목차 + 오른쪽 본문 ── */
+.wrap{max-width:1360px;margin:0 auto;padding:32px max(22px,env(safe-area-inset-right)) 72px max(22px,env(safe-area-inset-left));
+  display:grid;grid-template-columns:300px minmax(0,1fr);gap:40px;align-items:start}
+.main{min-width:0}
+
+/* 강의 목차(왼쪽) */
+.side{position:sticky;top:76px;max-height:calc(100vh - 96px);display:flex;flex-direction:column;background:var(--bg-alt);border-radius:var(--r);overflow:hidden}
+.side-h{display:flex;justify-content:space-between;align-items:baseline;padding:20px 20px 10px}
+.side-h h2{margin:0;font-size:21px;font-weight:700;letter-spacing:-.025em}
+.side-h span{font-size:13px;color:var(--fg2)}
+.chs{overflow:auto;overscroll-behavior:contain;padding:4px 10px 12px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+.ch{display:grid;grid-template-columns:40px minmax(0,1fr) 20px;gap:12px;align-items:center;border-radius:var(--r-sm);padding:10px;min-height:60px;transition:background-color .2s}
+.ch:hover{background:color-mix(in srgb,var(--fg) 5%,transparent)}
+.ch .n{width:40px;height:40px;border-radius:10px;background:var(--card);color:var(--fg);display:grid;place-items:center;font-weight:700;font-size:13.5px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.ch .t{display:block;font-weight:600;font-size:15px;line-height:1.35;letter-spacing:-.02em}
+.ch .m{display:block;font-size:12.5px;color:var(--fg2);margin-top:2px}
+.ch .p{display:block;height:3px;border-radius:2px;background:color-mix(in srgb,var(--fg) 10%,transparent);overflow:hidden;margin-top:7px}
+.ch .p i{display:block;height:100%;background:var(--blue);width:0}
+.ch .done{color:var(--ok);visibility:hidden}
+.ch .done svg{width:18px;height:18px;display:block}
+.ch.is-done .done{visibility:visible}
+.ch[aria-current="page"]{background:var(--card);box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.ch[aria-current="page"] .n{background:var(--blue);color:#fff;box-shadow:none}
+.sc{list-style:none;margin:2px 0 10px 29px;padding:0 0 0 15px;border-left:1px solid var(--line)}
+.sc button{display:flex;gap:10px;width:100%;text-align:left;border:0;background:none;padding:9px 10px;font-size:14px;color:var(--fg2);border-radius:10px;line-height:1.45;min-height:40px;align-items:baseline;transition:background-color .2s,color .2s}
+.sc button:hover{background:color-mix(in srgb,var(--fg) 5%,transparent);color:var(--fg)}
+.sc button.on{color:var(--blue);font-weight:600;background:var(--blue-soft)}
+.sc time{color:var(--fg3);flex:none;width:40px;font-size:12.5px}
+.sc button.on time{color:var(--blue)}
+
 /* ── 히어로: 큰 제목 + 영상 ── */
-.hero{padding:56px max(22px,env(safe-area-inset-right)) 64px max(22px,env(safe-area-inset-left));text-align:center}
+.hero{padding:24px 0 8px;text-align:center}
 .hero-in{max-width:1080px;margin:0 auto}
 .eyebrow{margin:0 0 10px;font-size:17px;font-weight:600;color:var(--case);letter-spacing:-.01em}
 h1{margin:0 auto;max-width:15em;font-size:clamp(34px,5.6vw,64px);line-height:1.06;font-weight:700;letter-spacing:-.035em;text-wrap:balance}
@@ -107,10 +137,9 @@ h1 small{display:block;max-width:26em;margin:16px auto 0;font-size:clamp(19px,2.
 .cap span{background:rgba(0,0,0,.78);color:#fff;padding:.14em .6em;border-radius:.32em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .cap.s{--cs:.8}.cap.l{--cs:1.22}.cap.xl{--cs:1.45}
 .cap:empty{visibility:hidden}
-.pctl{position:absolute;top:14px;right:14px;display:flex;gap:8px;z-index:3;opacity:0;transition:opacity .25s}
-.player:hover .pctl,.player:focus-within .pctl{opacity:1}
-.pctl button{width:44px;height:44px;border-radius:var(--pill);border:0;background:rgba(40,40,42,.6);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);color:#fff;display:grid;place-items:center}
-.pctl svg{width:18px;height:18px}
+/* 영상 기본 전체 화면 버튼으로 들어갔을 때의 자막(브라우저 자막 트랙) */
+video::cue{background:rgba(0,0,0,.78);color:#fff;font-family:var(--f);font-weight:600;font-size:3vw;line-height:1.6}
+video.cs-s::cue{font-size:2.4vw}video.cs-l::cue{font-size:3.6vw}video.cs-xl::cue{font-size:4.3vw}
 .resume{display:inline-flex;align-items:center;gap:8px;position:absolute;left:16px;top:16px;z-index:3;border:0;border-radius:var(--pill);padding:0 18px;height:44px;font-weight:600;font-size:15px;
   background:rgba(250,250,252,.82);color:#1d1d1f;-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px)}
 .resume svg{width:14px;height:14px}
@@ -130,40 +159,8 @@ kbd{font-family:var(--f);font-size:11.5px;border:1px solid var(--line);border-ra
 .bd::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
 .bd.law::before{background:var(--law)}.bd.gov::before{background:var(--gov)}.bd.case::before{background:var(--case)}
 
-/* ── 구역 공통 ── */
-.sec{padding:80px max(22px,env(safe-area-inset-right)) 88px max(22px,env(safe-area-inset-left))}
-.sec.alt{background:var(--bg-alt)}
-.sec-in{max-width:1024px;margin:0 auto}
-.sec-h{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:28px}
-.sec-h h2{margin:0;font-size:clamp(28px,3.6vw,40px);line-height:1.1;font-weight:700;letter-spacing:-.03em}
-.sec-h p{margin:8px 0 0;font-size:17px;color:var(--fg2)}
-.paddles{display:flex;gap:10px}
-.paddles button{width:40px;height:40px;border-radius:50%;border:0;background:color-mix(in srgb,var(--fg) 8%,transparent);color:var(--fg);display:grid;place-items:center;transition:background-color .2s,opacity .2s}
-.paddles button:hover{background:color-mix(in srgb,var(--fg) 14%,transparent)}
-.paddles button:disabled{opacity:.35;cursor:default}
-.paddles svg{width:16px;height:16px}
-
-/* 강의 목차: 가로로 넘기는 카드 갤러리 */
-.chs{display:grid;grid-auto-flow:column;grid-auto-columns:min(300px,78vw);gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;
-  margin:0 calc(-1 * max(22px,env(safe-area-inset-left)));padding:8px max(22px,env(safe-area-inset-left)) 32px;scroll-padding:0 max(22px,env(safe-area-inset-left))}
-.chs::-webkit-scrollbar{display:none}
-.ch{scroll-snap-align:start;display:flex;flex-direction:column;background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);transition:transform .35s var(--ease),box-shadow .35s var(--ease);outline-offset:4px}
-.ch:hover{transform:scale(1.015);box-shadow:var(--shadow-hover)}
-.ch .thumb{position:relative;display:block;aspect-ratio:16/9;background:#111}
-.ch .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.ch .p{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(255,255,255,.25)}
-.ch .p i{display:block;height:100%;background:var(--blue);width:0}
-.ch .done{position:absolute;top:10px;right:10px;width:26px;height:26px;border-radius:50%;background:var(--ok);color:#fff;display:none;place-items:center}
-.ch .done svg{width:14px;height:14px}
-.ch.is-done .done{display:grid}
-.ch .body{display:block;padding:18px 20px 22px}
-.ch .n{display:block;font-size:12px;font-weight:600;letter-spacing:.02em;color:var(--fg2);text-transform:uppercase}
-.ch .t{display:block;margin-top:6px;font-size:19px;font-weight:700;line-height:1.25;letter-spacing:-.025em;text-wrap:balance}
-.ch .m{display:block;margin-top:8px;font-size:14px;color:var(--fg2)}
-.ch[aria-current="page"]{box-shadow:0 0 0 2px var(--blue),var(--shadow)}
-.ch[aria-current="page"] .n{color:var(--blue)}
-.ch .playing{display:none;margin-top:12px;font-size:13px;font-weight:600;color:var(--blue)}
-.ch[aria-current="page"] .playing{display:block}
+/* ── 본문 아래 구역 ── */
+.sec{padding-top:72px}
 
 /* 이 장 안내: 큰 문단 + 타일 */
 .why{margin:0 0 40px;max-width:30em;font-size:clamp(21px,2.4vw,28px);line-height:1.38;font-weight:600;letter-spacing:-.025em;color:var(--fg2);text-wrap:pretty}
@@ -217,7 +214,9 @@ kbd{font-family:var(--f);font-size:11.5px;border:1px solid var(--line);border-ra
   -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);padding:12px 20px;border-radius:var(--pill);font-size:15px;font-weight:500;z-index:40;box-shadow:0 10px 30px rgba(0,0,0,.2)}
 
 @media (max-width:1068px){
-  .pctl{opacity:1}
+  .wrap{grid-template-columns:minmax(0,1fr);gap:40px;padding-top:16px}
+  .side{position:static;max-height:none;order:2}
+  .chs{max-height:420px}
   .keys{display:none}
 }
 @media (max-width:734px){
@@ -226,12 +225,11 @@ kbd{font-family:var(--f);font-size:11.5px;border:1px solid var(--line);border-ra
   .brand{flex:1}
   .search{order:3;flex-basis:100%;max-width:none}
   .overall .track{display:none}
-  .hero{padding-top:36px;padding-bottom:48px}
+  .hero{padding-top:20px}
   .eyebrow{font-size:15px}
   .nav{margin:22px 0 28px}
   .player{border-radius:14px;margin:0 -6px}
-  .sec{padding-top:56px;padding-bottom:64px}
-  .paddles{display:none}
+  .sec{padding-top:56px}
   .facts{grid-template-columns:minmax(0,1fr);gap:14px}
   .facts>div{padding:24px}
   .facts dd{font-size:17px}
@@ -261,7 +259,12 @@ kbd{font-family:var(--f);font-size:11.5px;border:1px solid var(--line);border-ra
   </div>
 </header>
 
-<main>
+<div class="wrap">
+<aside class="side" aria-label="챕터 목록">
+  <div class="side-h"><h2>강의 목차</h2><span id="total" class="num"></span></div>
+  <nav class="chs" id="chs"></nav>
+</aside>
+<main class="main">
   <section class="hero" aria-label="지금 보는 강의">
     <div class="hero-in">
       <p class="eyebrow num" id="eb"></p>
@@ -271,9 +274,8 @@ kbd{font-family:var(--f);font-size:11.5px;border:1px solid var(--line);border-ra
         <button class="btn" id="prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg>이전 챕터</button>
       </div>
       <div class="player" id="player">
-        <video id="v" controls playsinline preload="metadata" controlslist="nofullscreen nodownload"></video>
+        <video id="v" controls playsinline preload="metadata" controlslist="nodownload"></video>
         <div class="cap" id="cap" aria-live="off"></div>
-        <div class="pctl"><button id="fs" aria-label="전체 화면"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button></div>
         <button class="resume" id="resume" hidden></button>
       </div>
       <div class="tools">
@@ -287,18 +289,8 @@ kbd{font-family:var(--f);font-size:11.5px;border:1px solid var(--line);border-ra
     </div>
   </section>
 
-  <section class="sec alt" aria-labelledby="chs-h">
-    <div class="sec-in">
-      <div class="sec-h">
-        <div><h2 id="chs-h">강의 목차</h2><p id="total" class="num"></p></div>
-        <div class="paddles"><button id="pl" aria-label="이전 카드 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="m15 18-6-6 6-6"/></svg></button><button id="pr" aria-label="다음 카드 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="m9 18 6-6-6-6"/></svg></button></div>
-      </div>
-      <nav class="chs" id="chs" aria-label="챕터 목록"></nav>
-    </div>
-  </section>
-
   <section class="sec" aria-label="이 장 안내와 학습 자료">
-    <div class="sec-in">
+    <div>
       <p class="why" id="why"></p>
       <dl class="facts" id="info"></dl>
       <div class="tabs">
@@ -316,11 +308,12 @@ kbd{font-family:var(--f);font-size:11.5px;border:1px solid var(--line);border-ra
     </div>
   </section>
 </main>
+</div>
 
 <footer class="foot">
   <div class="foot-in">
     <details id="notice"><summary>이 매뉴얼과 영상의 성격 (꼭 읽어 주세요)</summary></details>
-    <p class="copy">국제교류수업 운영 매뉴얼 · 2026. 11. 10. 최종수정본 기준</p>
+    <p class="copy">국제교류수업 운영 매뉴얼 · 2026. 11. 10. 최종수정본 기준 · 영상 내레이션은 AI 음성(Supertone Supertonic 3)입니다</p>
   </div>
 </footer>
 <div class="toast" id="toast" role="status" hidden></div>
@@ -360,25 +353,13 @@ const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
 function renderSide() {
   $('#chs').innerHTML = D.map((c, i) => `
     <a class="ch${frac(i) >= .9 ? ' is-done' : ''}" href="#${c.id}" data-i="${i}"${i === cur ? ' aria-current="page"' : ''}>
-      <span class="thumb">${c.poster ? `<img src="${esc(c.poster)}" alt="" loading="lazy" decoding="async">` : ''}<span class="p"><i style="width:${frac(i) * 100}%"></i></span><span class="done" aria-hidden="true">${CHECK_SVG}</span></span>
-      <span class="body"><span class="n">${label(c)}</span><span class="t">${esc(c.title)}</span><span class="m num">${mmss(c.dur)} · ${c.scenes.length}장면${frac(i) >= .9 ? ' · 시청 완료' : frac(i) > .02 ? ` · ${Math.round(frac(i) * 100)}%` : ''}</span><span class="playing">지금 보는 중</span></span>
-    </a>`).join('');
+      <span class="n">${short(c)}</span>
+      <span><span class="t">${esc(c.title)}</span><span class="m num">${mmss(c.dur)} · ${c.scenes.length}장면${frac(i) >= .9 ? ' · 시청 완료' : frac(i) > .02 ? ` · ${Math.round(frac(i) * 100)}%` : ''}</span><span class="p"><i style="width:${frac(i) * 100}%"></i></span></span>
+      <span class="done" aria-hidden="true">${CHECK_SVG}</span>
+    </a>${i === cur ? '<ul class="sc" id="scl">' + c.scenes.map((s, j) => `<li><button data-t="${s.t}" data-j="${j}"><time class="num">${mmss(s.t)}</time><span>${esc(s.label)}</span></button></li>`).join('') + '</ul>' : ''}`).join('');
   const n = D.filter((c, i) => frac(i) >= .9).length;
   $('#ovt').textContent = `${n} / ${D.length} 완료`; $('#ovb').style.transform = `scaleX(${n / D.length})`;
-  // 지금 보는 카드가 갤러리 안에 보이도록 가로로만 이동(페이지 세로 스크롤은 건드리지 않음)
-  const chs = $('#chs'), a = chs.querySelector('.ch[aria-current="page"]');
-  if (a) {
-    const pad = parseFloat(getComputedStyle(chs).paddingLeft), x = a.offsetLeft - chs.offsetLeft;
-    if (x - pad < chs.scrollLeft || x + a.offsetWidth > chs.scrollLeft + chs.clientWidth - pad) chs.scrollTo({ left: Math.max(0, x - pad), behavior: 'smooth' });
-  }
-  updPaddles();
 }
-/* 갤러리 좌우 넘김 버튼 */
-function updPaddles() { const c = $('#chs'); $('#pl').disabled = c.scrollLeft < 4; $('#pr').disabled = c.scrollLeft + c.clientWidth >= c.scrollWidth - 4; }
-$('#pl').onclick = () => { const c = $('#chs'); c.scrollBy({ left: -c.clientWidth * .8, behavior: 'smooth' }); };
-$('#pr').onclick = () => { const c = $('#chs'); c.scrollBy({ left: c.clientWidth * .8, behavior: 'smooth' }); };
-$('#chs').addEventListener('scroll', () => requestAnimationFrame(updPaddles), { passive: true });
-window.addEventListener('resize', updPaddles);
 $('#chs').addEventListener('click', e => {
   const a = e.target.closest('a.ch');
   if (a) { if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return; e.preventDefault(); go(+a.dataset.i, true); return; }
@@ -434,7 +415,7 @@ function load(i, autoplay, seek) {
 }
 function go(i, autoplay, seek) { if (i < 0 || i >= D.length) return; load(i, autoplay, seek); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 v.addEventListener('loadedmetadata', () => {
-  for (const t of v.textTracks) t.mode = 'hidden';
+  syncNativeCaps();
   if (pendingSeek != null) { v.currentTime = pendingSeek; pendingSeek = null; if (seekPlay) v.play().catch(() => {}); seekPlay = true; }
 });
 // iOS 네이티브 전체 화면에서는 자체 자막이 보이지 않으므로 트랙을 켠다
@@ -443,13 +424,21 @@ v.addEventListener('webkitendfullscreen', () => { for (const t of v.textTracks) 
 $('#prev').onclick = () => go(cur - 1, true);
 $('#next').onclick = () => go(cur + 1, true);
 
-/* 전체 화면: 자막 레이어가 함께 보이도록 플레이어 컨테이너를 전체 화면으로 */
+/* 전체 화면: 영상 컨트롤의 기본 전체 화면 버튼(·F 키·더블클릭)을 그대로 쓴다.
+   영상만 전체 화면이 되면 자체 자막 레이어가 가려지므로, 그동안은 브라우저 자막 트랙(::cue 스타일)으로 보여 준다. */
 function toggleFS() {
   if (document.fullscreenElement) document.exitFullscreen();
-  else if (player.requestFullscreen) player.requestFullscreen().catch(() => {});
+  else if (v.requestFullscreen) v.requestFullscreen().catch(() => {});
   else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen();
 }
-$('#fs').onclick = toggleFS;
+function syncNativeCaps() {
+  const fs = document.fullscreenElement === v;
+  v.className = $('#ccs').value ? 'cs-' + $('#ccs').value : '';
+  for (const t of v.textTracks) t.mode = fs && $('#cc').checked ? 'showing' : 'hidden';
+}
+document.addEventListener('fullscreenchange', syncNativeCaps);
+$('#cc').addEventListener('change', syncNativeCaps);
+$('#ccs').addEventListener('change', syncNativeCaps);
 v.addEventListener('dblclick', e => { e.preventDefault(); toggleFS(); });
 
 let lastScene = -1, lastSave = 0;

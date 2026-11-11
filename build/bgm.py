@@ -3,11 +3,12 @@
 사용: python build/bgm.py [chapter_id ...]   (인자 없으면 전체)
 내레이션 원본은 build/cache/<id>.wav 를 쓰므로 여러 번 실행해도 배경음이 겹치지 않는다.
 """
-import os, subprocess, sys, wave
+import os, shutil, subprocess, sys, wave
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 B = os.path.join(ROOT, 'build')
-FF = r'C:\Users\Ahn\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.2-full_build\bin\ffmpeg.exe'
+FF = os.environ.get('FFMPEG') or shutil.which('ffmpeg') or os.path.expandvars(
+    r'%LOCALAPPDATA%\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.2-full_build\bin\ffmpeg.exe')
 BGM = os.path.join(B, 'assets', 'bgm.mp3')
 BGM_VOL = 0.09      # 약 -21dB: 내레이션보다 약 19dB 작게
 FADE_IN, FADE_OUT = 2.0, 3.0

@@ -2,18 +2,21 @@
 
 사용: python build/render.py [chapter_id ...]   (인자 없으면 전체)
 """
-import html, json, os, re, subprocess, sys, wave
-import pymupdf
-from playwright.sync_api import sync_playwright
+import html, json, os, re, shutil, subprocess, sys, wave
+try:
+    import pymupdf          # 원본 PDF로 슬라이드를 새로 그릴 때만 필요
+except ImportError:
+    pymupdf = None
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 B = os.path.join(ROOT, 'build')
 sys.path.insert(0, B)
 from content import CH
-from tts import key
+from tts import key, wav_path
 
 PDF = os.path.join(ROOT, '국제교류 업무매뉴얼_최종수정본(2026.11.10).pdf')
-FF = r'C:\Users\Ahn\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.2-full_build\bin\ffmpeg.exe'
+FF = os.environ.get('FFMPEG') or shutil.which('ffmpeg') or os.path.expandvars(
+    r'%LOCALAPPDATA%\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-9.0.2-full_build\bin\ffmpeg.exe')
 TTS = os.path.join(B, 'cache', 'tts')
 WAVC = os.path.join(B, 'cache', 'wav')
 IMG = os.path.join(B, 'cache', 'img')
@@ -22,9 +25,21 @@ for d in (WAVC, IMG, os.path.join(SITE, 'videos'), os.path.join(SITE, 'posters')
     os.makedirs(d, exist_ok=True)
 
 LEAD, GAP, COMMA_TAIL, TAIL = 0.55, 0.42, 0.0, 0.85
-SR = 24000
+SR = 44100
 TAG = {'law': ('법령·규정', '#1d3a72'), 'gov': ('교육청 지침·안내', '#0f7d70'), 'case': ('사례·실무 권장', '#c5631c')}
-doc = pymupdf.open(PDF)
+
+
+class _LazyDoc:
+    """원본 PDF는 슬라이드를 새로 그릴 때만 연다."""
+    _d = None
+
+    def __getitem__(self, i):
+        if self._d is None:
+            self._d = pymupdf.open(PDF)
+        return self._d[i]
+
+
+doc = _LazyDoc()
 esc = html.escape
 
 
@@ -195,7 +210,7 @@ def wav_of(text):
     k = key(text)
     w = os.path.join(WAVC, k + '.wav')
     if not os.path.exists(w):
-        subprocess.run([FF, '-v', 'error', '-y', '-i', os.path.join(TTS, k + '.mp3'), '-ac', '1', '-ar', str(SR), '-sample_fmt', 's16', w], check=True)
+        subprocess.run([FF, '-v', 'error', '-y', '-i', wav_path(text), '-ac', '1', '-ar', str(SR), '-sample_fmt', 's16', w], check=True)
     with wave.open(w) as f:
         return f.readframes(f.getnframes())
 
@@ -231,6 +246,32 @@ def token_times(text, words):
     return toks, res
 
 
+def char_words(text, dur):
+    """Supertonic은 단어 경계 시간을 주지 않으므로 글자 수 비례로 단어 시간을 나눈다(앞뒤 짧은 무음 제외)."""
+    toks = text.split()
+    n = [len(norm(t)) or 1 for t in toks]
+    a0, a1 = min(0.08, dur * .05), max(dur - 0.12, dur * .9)
+    tot, c, out = sum(n), 0, []
+    for t, k in zip(toks, n):
+        out.append([a0 + (a1 - a0) * c / tot, a0 + (a1 - a0) * (c + k) / tot, t])
+        c += k
+    return out
+
+
+def slides_from_video(c, old):
+    """원본 PDF가 없을 때: 기존 영상에서 장면마다 가운데 프레임을 뽑아 슬라이드로 다시 쓴다(처음 한 번만, 캐시)."""
+    ts = [x['t'] for x in old['scenes']] + [old['dur']]
+    src = os.path.join(SITE, 'videos', c['id'] + '.mp4')
+    out = []
+    for i in range(len(c['scenes'])):
+        f = os.path.join(IMG, f"{c['id']}_{i:02d}.png")
+        if not os.path.exists(f):
+            mid = (ts[i] + ts[i + 1]) / 2
+            subprocess.run([FF, '-v', 'error', '-y', '-ss', f'{mid:.2f}', '-i', src, '-frames:v', '1', f], check=True)
+        out.append(f)
+    return out
+
+
 def chunks(toks, maxc=30):
     """자막 한 줄 단위로 토큰 묶기: 쉼표·마침표 뒤에서 우선 끊고, 최대 maxc 글자."""
     out, cur = [], []
@@ -261,8 +302,7 @@ def build_audio_and_cues(c):
         for j, text in enumerate(s['say']):
             a = wav_of(text)
             dur = len(a) / 2 / SR
-            words = json.load(open(os.path.join(TTS, key(text) + '.json'), encoding='utf-8'))
-            tt = token_times(text, words)
+            tt = token_times(text, char_words(text, dur))
             toks, times = tt if tt else (text.split(), None)
             for grp in chunks(toks):
                 if times:
@@ -310,13 +350,25 @@ def main(ids):
     srcs = json.load(open(os.path.join(B, 'srcs.json'), encoding='utf-8'))
     dpath = os.path.join(SITE, 'data.json')
     data = {d['id']: d for d in json.load(open(dpath, encoding='utf-8'))} if os.path.exists(dpath) else {}
-    with sync_playwright() as p:
-        br = p.chromium.launch(channel='msedge')
+    if not data and os.path.exists(os.path.join(SITE, 'data.js')):
+        js = open(os.path.join(SITE, 'data.js'), encoding='utf-8').read()
+        data = {d['id']: d for d in json.loads(js[js.index('['):js.rindex(']') + 1])}
+    todo = [c for c in CH if not ids or c['id'] in ids]
+    use_pdf = os.path.exists(PDF) and pymupdf is not None
+    if use_pdf:
+        from playwright.sync_api import sync_playwright
+        pw = sync_playwright().start()
+        br = pw.chromium.launch(channel='msedge')
         page = br.new_page(viewport={'width': 1920, 'height': 1080})
-        for c in CH:
-            if ids and c['id'] not in ids:
-                continue
-            slides = render_slides(c, page)
+        all_slides = {c['id']: render_slides(c, page) for c in todo}
+        br.close(); pw.stop()
+    else:
+        # 원본 PDF가 없으면 영상을 덮어쓰기 전에 기존 영상에서 장면 화면을 모두 뽑아 둔다
+        print('PDF 없음 → 기존 영상의 장면 화면을 재사용', flush=True)
+        all_slides = {c['id']: slides_from_video(c, data[c['id']]) for c in todo}
+    if True:
+        for c in todo:
+            slides = all_slides[c['id']]
             if os.environ.get('SLIDES_ONLY'):
                 print('slides', c['id'], flush=True)
                 continue
@@ -333,7 +385,6 @@ def main(ids):
                         for x, s in zip(sc, c['scenes'])],
                 cues=cues)
             print(f"{c['id']}: {total / 60:.1f} min, {len(c['scenes'])} scenes, {len(cues)} cues", flush=True)
-        br.close()
     ordered = [data[c['id']] for c in CH if c['id'] in data]
     json.dump(ordered, open(dpath, 'w', encoding='utf-8'), ensure_ascii=False)
     with open(os.path.join(SITE, 'data.js'), 'w', encoding='utf-8') as f:

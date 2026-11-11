@@ -8,9 +8,9 @@
 |---|---|
 | `site/` | 배포할 사이트 전체 (`index.html`, `data.js`, `videos/*.mp4`, `posters/*.jpg`) |
 | `build/content.py` | **내레이션 대본과 장면 구성** — 문장을 고치려면 여기만 수정 |
-| `build/tts.py` | SunHi(ko-KR-SunHiNeural) 음성 생성, 단어 경계 타이밍 저장 |
+| `build/tts.py` | Supertonic 3 남성 M2 음성 생성(로컬 TTS). `1장`은 `일장`처럼 서수로 읽도록 변환 |
 | `build/slides.py` | 영상 프레임(슬라이드) 디자인 |
-| `build/render.py` | 슬라이드 렌더 → 음성 조립 → MP4·자막 큐·`site/data.js` 생성 |
+| `build/render.py` | 슬라이드 렌더 → 음성 조립 → MP4·자막 큐·`site/data.js` 생성 (원본 PDF가 없으면 기존 영상의 장면 화면을 재사용) |
 | `build/serve.py` | 로컬 미리보기 서버(영상 탐색 지원) |
 
 ## 대본을 고친 뒤 다시 만들기
